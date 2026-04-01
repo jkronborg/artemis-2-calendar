@@ -1,6 +1,7 @@
 # Artemis II mission calendar
 
-Subscribe to a calendar of the events below via the public .ics link.
+Subscribe to a calendar of the events below via the [public .ics
+link](https://jkronborg.github.io/artemis-2-calendar/events.ics).
 
 ## Notable events
 
