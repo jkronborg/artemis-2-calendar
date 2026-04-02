@@ -5,6 +5,7 @@ const path = require('path');
 
 const readmePath = path.resolve(__dirname, 'README.md');
 const outputPath = path.resolve(__dirname, 'events.ics');
+const livestreamUrl = 'https://www.youtube.com/watch?v=m3kR2KK8TEs';
 
 function formatUtcDate(date) {
   const year = date.getUTCFullYear();
@@ -103,6 +104,8 @@ function buildIcs(events) {
     lines.push(`DTSTART:${formatUtcDate(event.start)}`);
     lines.push(`DTEND:${formatUtcDate(event.end)}`);
     lines.push(`SUMMARY:${escapeIcsText(event.title)}`);
+    lines.push(`URL:${livestreamUrl}`);
+    lines.push(`DESCRIPTION:${escapeIcsText(`NASA live stream: ${livestreamUrl}`)}`);
     lines.push('END:VEVENT');
   });
 
