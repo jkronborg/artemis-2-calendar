@@ -44,7 +44,8 @@ function parseTableRows(readmeContent) {
 
       const hasExpectedHeaders =
         columns.length >= 3 &&
-        columns[1] === 'Time (UTC)' &&
+        columns[0] === 'Start time (UTC)' &&
+        columns[1] === 'End time (UTC)' &&
         columns[2] === 'Event';
 
       if (hasExpectedHeaders) {
@@ -67,15 +68,17 @@ function parseTableRows(readmeContent) {
       continue;
     }
 
-    const timeUtc = columns[1];
+    const startTimeUtc = columns[0];
+    const endTimeUtc = columns[1];
     const title = columns[2];
-    const start = new Date(timeUtc);
+    const start = new Date(startTimeUtc);
+    const end = new Date(endTimeUtc);
 
-    if (Number.isNaN(start.getTime())) {
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
       continue;
     }
 
-    rows.push({ start, title });
+    rows.push({ start, end, title });
   }
 
   return rows;
@@ -92,14 +95,13 @@ function buildIcs(events) {
   ];
 
   events.forEach((event, index) => {
-    const end = new Date(event.start.getTime() + 60 * 1000);
     const uid = `${formatUtcDate(event.start)}-${index}@artemis-2-calendar`;
 
     lines.push('BEGIN:VEVENT');
     lines.push(`UID:${uid}`);
     lines.push(`DTSTAMP:${nowStamp}`);
     lines.push(`DTSTART:${formatUtcDate(event.start)}`);
-    lines.push(`DTEND:${formatUtcDate(end)}`);
+    lines.push(`DTEND:${formatUtcDate(event.end)}`);
     lines.push(`SUMMARY:${escapeIcsText(event.title)}`);
     lines.push('END:VEVENT');
   });
